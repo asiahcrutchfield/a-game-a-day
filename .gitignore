@@ -1,0 +1,15 @@
+# PICO-8 automatic cartridge backups
+_backup/
+
+# PICO-8 local runtime configurations (if generated inside directory)
+config.txt
+cdata/
+
+# OS-generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Text editor / IDE local metadata (if you use VS Code or similar tools)
+.vscode/
+.idea/
