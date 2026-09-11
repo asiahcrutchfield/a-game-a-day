@@ -10,3 +10,7 @@
 * PICO-8 coordinates start at (0,0) in the top-left corner. Increasing Y moves things down!
 * `cls(1)` clears the canvas using the built-in color palette.
 * To stop a sprite from leaving the right or bottom of the screen I need to subtract from how many pixels a sprite extends from its top left point.
+
+### 🔨 Tools & Resources
+- Pico-8 
+- Language: Lua
