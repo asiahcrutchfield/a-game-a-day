@@ -1,4 +1,4 @@
-# 000 - Sprite Movement First Steps
+# 001 - Collision Practice
 
 ### 🎯 Objective
 - [x] Create core `_init`, `_update`, and `_draw` loops

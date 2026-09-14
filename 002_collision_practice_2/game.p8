@@ -1,0 +1,144 @@
+pico-8 cartridge // http://www.pico-8.com
+version 43
+__lua__
+function _init()
+	-- obstacle start points --
+		obs_1_x = 64
+		obs_1_y = 80
+		obs_2_x = 40
+		obs_2_y = 40
+	-- base sprite width --
+		width = 8
+		height = 8
+	-- obstacle dimensions --
+		obs_1_height = (height-1)*2
+		obs_1_width = width - 1
+		obs_1_left = obs_1_x
+		obs_1_top = obs_1_y
+		obs_1_right = obs_1_left+obs_1_width
+		obs_1_bottom = obs_1_top+obs_1_height
+		obs_2_width = (width-1)*2
+		obs_2_height = height - 1
+		obs_2_left = obs_2_x
+		obs_2_top = obs_2_y
+		obs_2_right = obs_2_left+obs_2_width
+		obs_2_bottom = obs_2_top+obs_2_height
+	-- player --
+		player = {
+			-- player start point --
+				x = 0,
+				y = 0,
+				speed = 3,
+			-- player dimensions --
+				w = width-1,
+				h = width-1,
+				left = x,
+				top = y,
+				right = 0,
+				bottom = 0
+		}		
+	-- screen dimensions --
+		top_edge = 0
+		left_edge = 0
+		right_edge = 127
+		bottom_edge = 127
+end
+
+function _update()
+	-- 1. save old positions --
+		old_x = player.x
+		old_y = player.y
+	-- 2. player movement --
+		if btn(0) then
+			player.x -= player.speed
+		end
+		
+		if btn(1) then
+			player.x += player.speed
+		end
+		
+		if btn(2) then
+			player.y -= player.speed
+		end
+		
+		if btn(3) then
+			player.y += player.speed
+		end
+	-- 3. update player dimensions --
+		player.left = player.x
+		player.top = player.y
+		player.right = player.left+player.w
+		player.bottom = player.top+player.h
+	-- 4. screen collision --
+		if player.left < left_edge then
+			player.x = left_edge
+		end
+		
+		if player.top < top_edge then
+			player.y = top_edge
+		end
+		
+		if player.right > right_edge then
+			player.x = right_edge-player.w
+		end
+		
+		if player.bottom > bottom_edge then
+			player.y = bottom_edge-player.h
+		end
+	-- 5. create collision function --
+	-- 6. obstacle collision --
+		if is_colliding(obs_1_left, 
+		obs_1_top, obs_1_right, 
+		obs_1_bottom, player, 0, 3) 
+			or
+		is_colliding(obs_2_left, 
+		obs_2_top, obs_2_right, 
+		obs_2_bottom, player, 3, 0) then
+			player.x = old_x
+			player.y = old_y
+		end
+end
+
+function _draw()
+	cls()
+	-- obstacle 1 --
+		spr(2,obs_1_x,obs_1_y,1,2,false,false)	
+	-- obstacle 2 --
+		spr(3,obs_2_x,obs_2_y,2,1,false,false)
+	-- player --
+		spr(1,player.x,player.y)		
+end
+
+function is_colliding(obs_l, 
+	obs_t, obs_r, obs_b, p, v_sub,
+	h_sub)
+	-- set your default values here if they are omitted when called
+		v_sub = v_sub or 0
+		h_sub = h_sub or 0
+		
+	if p.right >= (obs_l + h_sub) and 
+	   p.left <= (obs_r - h_sub) and 
+	   p.bottom >= (obs_t + v_sub) and 
+	   p.top <= (obs_b - v_sub) then
+		return true
+	end
+	
+	return false									
+end
+__gfx__
+00000000aaaaaaaa0007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000a77aa77a0007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700a77aa77a0007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000aaaaaaaa0007700077777777777777770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000aaaaaaaa0007700077777777777777770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+007007007aaaaaa70007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000a777777a0007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000aaaaaaaa0007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000007700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
